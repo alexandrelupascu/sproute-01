@@ -22,10 +22,11 @@ public class PlayerMovementHandler : MonoBehaviour
     Vector2 _inputDirection;
     bool _isSprinting = false;
     float _stamina = 100f;
+    float _maxStamina = 100f;
     float _timeSinceLastSprint = 0f;
     bool _canMove = true;
     bool _canSprint = true;
-    bool _canRecoverStamina = false;
+    bool _canRecoverStamina = true;
 
     public float Stamina => _stamina; // Public getter
     
@@ -39,43 +40,86 @@ public class PlayerMovementHandler : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
-        Vector3 moveDirection = new Vector3(_inputDirection.x, 0, _inputDirection.y);
-        float moveSpeed = 1f;
+        Vector3 movement = GetMovementVector(GetMovementSpeed());
+        _characterController.Move(movement * Time.deltaTime);
+        Debug.Log("Stamina: " + _stamina);
+    }
 
-        if (_isSprinting && _canSprint && _canMove)
+    private float GetMovementSpeed()
+    {
+        float moveSpeed = _walkSpeed;
+    
+
+        if (_isSprinting && CanSprint())
         {
-            _timeSinceLastSprint = 0f;
+            moveSpeed = _sprintSpeed;
             _stamina -= _sprintStaminaCost * Time.deltaTime;
-            if (_stamina <= 0f)
-            {
-                _stamina = 0f;
-                _canSprint = false;
-            }
+            _timeSinceLastSprint = 0f;
+        }
+        else if (_isSprinting && !CanSprint())
+        {
+            moveSpeed = _walkSpeed;
+            _timeSinceLastSprint = 0f;
         }
         else
         {
-            if (_stamina < 100f)
+            // Recover stamina after cooldown
+            if (_stamina < _maxStamina && _canRecoverStamina)
             {
+                _timeSinceLastSprint += Time.deltaTime;
                 if (_timeSinceLastSprint >= _staminaRecoveryCooldown)
                 {
                     _stamina += _staminaRecoveryRate * Time.deltaTime;
-                    if (_stamina >= 100f)
-                    {
-                        _stamina = 100f;
-                        _canSprint = true;
-                    }
+                    Mathf.Clamp(_stamina, 0f, _maxStamina);
                 }
-                else
-                {
-                    _timeSinceLastSprint += Time.deltaTime;
-                }
+            }
+            else
+            {
+                _timeSinceLastSprint = 0f; // Reset timer if stamina is full
             }
         }
 
-        moveSpeed = _isSprinting ? _sprintSpeed : _walkSpeed;
-        moveDirection *= moveSpeed;
-        _characterController.Move(moveDirection * Time.deltaTime);
+        return moveSpeed;
     }
+
+    private Vector3 GetMovementVector(float speed)
+    {
+        Vector3 moveDirection = Vector3.zero;
+        if (_canMove)
+        {
+            moveDirection = new Vector3(_inputDirection.x, 0, _inputDirection.y);
+        }
+        return moveDirection *= speed;
+    }
+
+    private bool CanSprint()
+    {
+        if (!_canSprint)
+            return false;
+
+        if (_stamina <= 0f)
+        {
+            _stamina = 0f;
+            return false;
+        }
+        return true;
+    }
+
+
+    public void SetCanMove(bool canMove)
+    {
+        _canMove = canMove;
+    }
+
+    public void SetStaminaRecovery(bool canRecoverStamina)
+    {
+        _canRecoverStamina = canRecoverStamina;
+    }
+
+    public void SetCanSprint(bool canSprint)
+    {
+        _canSprint = canSprint;
+    }   
 
     // These methods get called by the PlayerHandler when input events are received
     public void OnMove(Vector2 direction)
@@ -86,15 +130,5 @@ public class PlayerMovementHandler : MonoBehaviour
     public void OnSprint(bool isSprinting)
     {
         _isSprinting = isSprinting;
-    }
-
-    public void EnableMoving()
-    {
-        _canMove = true;
-    }
-
-    public void DisableMoving()
-    {
-        _canMove = false;
     }
 }
