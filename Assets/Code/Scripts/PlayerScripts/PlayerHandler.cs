@@ -1,0 +1,48 @@
+using UnityEngine;
+
+
+// This script will reference other scripts handling major Player components.
+// This script shouldn't be a singleton.
+public class PlayerHandler : MonoBehaviour
+{
+
+    [SerializeField] private PlayerMovementHandler _movement; 
+    [SerializeField] private PlayerAnimationHandler _animation;
+    [SerializeField] private PlayerInputHandler _input;
+    [SerializeField] private PlayerFSM _fsm;
+    
+    // Public read only references
+    public PlayerMovementHandler Movement => _movement;
+    public PlayerAnimationHandler Animation => _animation;
+    public PlayerInputHandler Input => _input;
+    public PlayerFSM FSM => _fsm;
+
+    void Awake()
+    {
+        if (_movement == null)
+            Debug.LogWarning("PlayerHandler: _movement (PlayerMovementHandler) is not assigned.", this);
+        if (_animation == null)
+            Debug.LogWarning("PlayerHandler: _animation (PlayerAnimationHandler) is not assigned.", this);
+        if (_input == null)
+            Debug.LogWarning("PlayerHandler: _input (PlayerInputHandler) is not assigned.", this);
+        if (_fsm == null)
+            Debug.LogWarning("PlayerHandler: _fsm (PlayerFSM) is not assigned.", this);
+    }
+
+    void Onable()
+    {
+        _input.Move += _movement.OnMove;
+        _input.Sprint += _movement.OnSprint;
+    }
+
+    void OnDisable()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
