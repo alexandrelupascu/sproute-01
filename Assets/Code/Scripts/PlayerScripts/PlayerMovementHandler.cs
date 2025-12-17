@@ -9,13 +9,25 @@ using UnityEngine.InputSystem;
 public class PlayerMovementHandler : MonoBehaviour
 {
 
-    [SerializeField] private CharacterController _characterController;
-    [SerializeField] private float _walkSpeed = 5f;
-    [SerializeField] private float _sprintSpeed = 10f;
+    [SerializeField] CharacterController _characterController;
+    [Tooltip("Units per second")] [SerializeField] float _walkSpeed = 5f;
+    [Tooltip("Units per second")] [SerializeField] float _sprintSpeed = 10f;
 
+    [Header("Stamina Settings")]
+    [Tooltip("Percentage per second")] [SerializeField] float _staminaRecoveryRate = 1f;
+    [Tooltip("Percentage per second")] [SerializeField] float _sprintStaminaCost = 1f;
+    [Tooltip("Seconds")] [SerializeField] float _staminaRecoveryCooldown = 2f;
 
-    private Vector2 _inputDirection;
-    private bool _isSprinting = false;
+    
+    Vector2 _inputDirection;
+    bool _isSprinting = false;
+    float _stamina = 100f;
+    float _timeSinceLastSprint = 0f;
+    bool _canMove = true;
+    bool _canSprint = true;
+    bool _canRecoverStamina = false;
+
+    public float Stamina => _stamina; // Public getter
     
 
     public void Awake()
@@ -28,8 +40,40 @@ public class PlayerMovementHandler : MonoBehaviour
     public void Update()
     {
         Vector3 moveDirection = new Vector3(_inputDirection.x, 0, _inputDirection.y);
-        float speed = _isSprinting ? _sprintSpeed : _walkSpeed;
-        moveDirection *= speed;
+        float moveSpeed = 1f;
+
+        if (_isSprinting && _canSprint && _canMove)
+        {
+            _timeSinceLastSprint = 0f;
+            _stamina -= _sprintStaminaCost * Time.deltaTime;
+            if (_stamina <= 0f)
+            {
+                _stamina = 0f;
+                _canSprint = false;
+            }
+        }
+        else
+        {
+            if (_stamina < 100f)
+            {
+                if (_timeSinceLastSprint >= _staminaRecoveryCooldown)
+                {
+                    _stamina += _staminaRecoveryRate * Time.deltaTime;
+                    if (_stamina >= 100f)
+                    {
+                        _stamina = 100f;
+                        _canSprint = true;
+                    }
+                }
+                else
+                {
+                    _timeSinceLastSprint += Time.deltaTime;
+                }
+            }
+        }
+
+        moveSpeed = _isSprinting ? _sprintSpeed : _walkSpeed;
+        moveDirection *= moveSpeed;
         _characterController.Move(moveDirection * Time.deltaTime);
     }
 
@@ -42,5 +86,15 @@ public class PlayerMovementHandler : MonoBehaviour
     public void OnSprint(bool isSprinting)
     {
         _isSprinting = isSprinting;
+    }
+
+    public void EnableMoving()
+    {
+        _canMove = true;
+    }
+
+    public void DisableMoving()
+    {
+        _canMove = false;
     }
 }
