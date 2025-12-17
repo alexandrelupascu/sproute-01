@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static InputSystem_Actions;
 
-public class PlayerInputHandler : MonoBehaviour, IPlayerActions
+public class PlayerInput : MonoBehaviour, IPlayerActions
 {
     public event Action<Vector2> Move;
     public event Action<bool> Sprint;

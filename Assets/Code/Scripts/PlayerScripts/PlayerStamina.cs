@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerStaminaHandler : MonoBehaviour
+public class PlayerStamina : MonoBehaviour
 {
     [SerializeField] float _maxStamina = 100f;
     [SerializeField] float _recoveryRate = 10f;

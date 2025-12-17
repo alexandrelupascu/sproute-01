@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMovementHandler : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _walkSpeed = 5f;
     [SerializeField] private float _sprintSpeed = 10f;
@@ -12,18 +12,18 @@ public class PlayerMovementHandler : MonoBehaviour
     private bool _canMove = true;
 
     private CharacterController _characterController;
-    private PlayerStaminaHandler _stamina;
+    private PlayerStamina _stamina;
 
     private void Awake()
     {
-        _stamina = GetComponent<PlayerStaminaHandler>();
+        _stamina = GetComponent<PlayerStamina>();
         _characterController = GetComponent<CharacterController>();
 
         if (_characterController == null)
-            Debug.LogWarning("PlayerMovementHandler: CharacterController missing", this);
+            Debug.LogWarning("PlayerMovement: CharacterController missing", this);
 
         if (_stamina == null)
-            Debug.LogWarning("PlayerMovementHandler: PlayerStaminaHandler missing", this);
+            Debug.LogWarning("PlayerMovement: PlayerStamina missing", this);
     }
 
     private void Update()
