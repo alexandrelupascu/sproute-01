@@ -11,8 +11,7 @@ public class PlayerInputHandler : MonoBehaviour, IPlayerActions
 
     private InputSystem_Actions _input;
 
-    public Vector2 Direction =>
-        _input != null ? _input.Player.Move.ReadValue<Vector2>() : Vector2.zero;
+    //public Vector2 Direction => _input != null ? _input.Player.Move.ReadValue<Vector2>() : Vector2.zero;
 
     private void Awake()
     {

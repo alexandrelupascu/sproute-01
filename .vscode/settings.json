@@ -66,5 +66,8 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "Sproute-01.sln"
+    "dotnet.defaultSolution": "Sproute-01.sln",
+    "cSpell.words": [
+        "Behaviour"
+    ]
 }

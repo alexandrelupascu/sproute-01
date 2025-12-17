@@ -1,8 +1,11 @@
 using UnityEngine;
 
 
-// This script will reference other scripts handling major Player components.
-// This script shouldn't be a singleton.
+/// <summary>
+/// This script will be used to handle communication between different Player components.
+/// This script shouldn't be a singleton.
+/// </summary>
+
 public class PlayerHandler : MonoBehaviour
 {
 
@@ -29,15 +32,18 @@ public class PlayerHandler : MonoBehaviour
             Debug.LogWarning("PlayerHandler: _fsm (PlayerFSM) is not assigned.", this);
     }
 
-    void Onable()
+    void OnEnable()
     {
+        // For now, movement directly subscribes to input events.
+        // Will have to change this to handle states
         _input.Move += _movement.OnMove;
         _input.Sprint += _movement.OnSprint;
     }
 
     void OnDisable()
     {
-        
+        _input.Move -= _movement.OnMove;
+        _input.Sprint -= _movement.OnSprint;
     }
 
     // Update is called once per frame

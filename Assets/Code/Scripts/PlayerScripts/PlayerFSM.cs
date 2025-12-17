@@ -1,5 +1,12 @@
 using UnityEngine;
 
+
+
+/// <summary>
+/// This script will handle the Player Finite State Machine (FSM).
+/// For now, Movement and Animation states will be handled in PlayerHandler.
+/// Later, more complex states can be added here (Combat?).
+/// </summary>
 public class PlayerFSM : MonoBehaviour
 {
 
