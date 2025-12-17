@@ -1,134 +1,63 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-/// <summary>
-/// This script handles the player's movement based on input received from the PlayerInputHandler.
-/// This script doesn't subscribe to input events directly, instead it relies on the PlayerHandler to forward the input events.
-/// </summary>
 public class PlayerMovementHandler : MonoBehaviour
 {
+    [SerializeField] private float _walkSpeed = 5f;
+    [SerializeField] private float _sprintSpeed = 10f;
+    [Tooltip("Stamina per second")]
+    [SerializeField] private float _sprintCost = 10f;
 
-    [SerializeField] CharacterController _characterController;
-    [Tooltip("Units per second")] [SerializeField] float _walkSpeed = 5f;
-    [Tooltip("Units per second")] [SerializeField] float _sprintSpeed = 10f;
+    private Vector2 _inputDirection;
+    private bool _isSprinting;
+    private bool _canMove = true;
 
-    [Header("Stamina Settings")]
-    [Tooltip("Percentage per second")] [SerializeField] float _staminaRecoveryRate = 1f;
-    [Tooltip("Percentage per second")] [SerializeField] float _sprintStaminaCost = 1f;
-    [Tooltip("Seconds")] [SerializeField] float _staminaRecoveryCooldown = 2f;
+    private CharacterController _characterController;
+    private PlayerStaminaHandler _stamina;
 
-    
-    Vector2 _inputDirection;
-    bool _isSprinting = false;
-    float _stamina = 100f;
-    float _maxStamina = 100f;
-    float _timeSinceLastSprint = 0f;
-    bool _canMove = true;
-    bool _canSprint = true;
-    bool _canRecoverStamina = true;
-
-    public float Stamina => _stamina; // Public getter
-    
-
-    public void Awake()
+    private void Awake()
     {
+        _stamina = GetComponent<PlayerStaminaHandler>();
+        _characterController = GetComponent<CharacterController>();
+
         if (_characterController == null)
-            Debug.LogWarning("PlayerMovementHandler: _characterController is not assigned.", this);
+            Debug.LogWarning("PlayerMovementHandler: CharacterController missing", this);
+
+        if (_stamina == null)
+            Debug.LogWarning("PlayerMovementHandler: PlayerStaminaHandler missing", this);
     }
 
-    // Update is called once per frame
-    public void Update()
+    private void Update()
     {
-        Vector3 movement = GetMovementVector(GetMovementSpeed());
+        if (!_canMove) return;
+
+        float speed = GetMoveSpeed();
+        Vector3 movement = GetMoveVector(speed);
+
         _characterController.Move(movement * Time.deltaTime);
-        Debug.Log("Stamina: " + _stamina);
     }
 
-    private float GetMovementSpeed()
+    private float GetMoveSpeed()
     {
-        float moveSpeed = _walkSpeed;
-    
-
-        if (_isSprinting && CanSprint())
+        if (_isSprinting && _stamina != null &&
+            _stamina.TryConsume(_sprintCost * Time.deltaTime))
         {
-            moveSpeed = _sprintSpeed;
-            _stamina -= _sprintStaminaCost * Time.deltaTime;
-            _timeSinceLastSprint = 0f;
-        }
-        else if (_isSprinting && !CanSprint())
-        {
-            moveSpeed = _walkSpeed;
-            _timeSinceLastSprint = 0f;
-        }
-        else
-        {
-            // Recover stamina after cooldown
-            if (_stamina < _maxStamina && _canRecoverStamina)
-            {
-                _timeSinceLastSprint += Time.deltaTime;
-                if (_timeSinceLastSprint >= _staminaRecoveryCooldown)
-                {
-                    _stamina += _staminaRecoveryRate * Time.deltaTime;
-                    Mathf.Clamp(_stamina, 0f, _maxStamina);
-                }
-            }
-            else
-            {
-                _timeSinceLastSprint = 0f; // Reset timer if stamina is full
-            }
+            return _sprintSpeed;
         }
 
-        return moveSpeed;
+        return _walkSpeed;
     }
 
-    private Vector3 GetMovementVector(float speed)
+    private Vector3 GetMoveVector(float speed)
     {
-        Vector3 moveDirection = Vector3.zero;
-        if (_canMove)
-        {
-            moveDirection = new Vector3(_inputDirection.x, 0, _inputDirection.y);
-        }
-        return moveDirection *= speed;
+        Vector3 dir = new Vector3(_inputDirection.x, 0f, _inputDirection.y);
+        dir = Vector3.ClampMagnitude(dir, 1f);
+        return dir * speed;
     }
 
-    private bool CanSprint()
-    {
-        if (!_canSprint)
-            return false;
+    // FSM hooks
+    public void SetCanMove(bool value) => _canMove = value;
 
-        if (_stamina <= 0f)
-        {
-            _stamina = 0f;
-            return false;
-        }
-        return true;
-    }
-
-
-    public void SetCanMove(bool canMove)
-    {
-        _canMove = canMove;
-    }
-
-    public void SetStaminaRecovery(bool canRecoverStamina)
-    {
-        _canRecoverStamina = canRecoverStamina;
-    }
-
-    public void SetCanSprint(bool canSprint)
-    {
-        _canSprint = canSprint;
-    }   
-
-    // These methods get called by the PlayerHandler when input events are received
-    public void OnMove(Vector2 direction)
-    {
-        _inputDirection = direction;
-    }
-
-    public void OnSprint(bool isSprinting)
-    {
-        _isSprinting = isSprinting;
-    }
+    // Input hooks
+    public void OnMove(Vector2 direction) => _inputDirection = direction;
+    public void OnSprint(bool value) => _isSprinting = value;
 }
