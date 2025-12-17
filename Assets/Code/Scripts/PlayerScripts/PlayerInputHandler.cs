@@ -42,7 +42,7 @@ public class PlayerInputHandler : MonoBehaviour, IPlayerActions
 
     
 
-    // Unused actions
+    // Unused actions (subject to change)
     public void OnJump(InputAction.CallbackContext context) { }
     public void OnAttack(InputAction.CallbackContext context) { }
     public void OnCrouch(InputAction.CallbackContext context) { }

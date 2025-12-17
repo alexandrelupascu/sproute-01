@@ -2,6 +2,10 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// This script handles the player's movement based on input received from the PlayerInputHandler.
+/// This script doesn't subscribe to input events directly, instead it relies on the PlayerHandler to forward the input events.
+/// </summary>
 public class PlayerMovementHandler : MonoBehaviour
 {
 
@@ -29,6 +33,7 @@ public class PlayerMovementHandler : MonoBehaviour
         _characterController.Move(moveDirection * Time.deltaTime);
     }
 
+    // These methods get called by the PlayerHandler when input events are received
     public void OnMove(Vector2 direction)
     {
         _inputDirection = direction;
