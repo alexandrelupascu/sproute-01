@@ -7,11 +7,15 @@ public class PlayerInput : MonoBehaviour, IPlayerActions
 {
     public event Action<Vector2> Move;
     public event Action<bool> Sprint;
+
+    public event Action<bool> Attack1;
+    public event Action<bool> Attack2;
     
 
-    private InputSystem_Actions _input;
+    InputSystem_Actions _input;
 
-    //public Vector2 Direction => _input != null ? _input.Player.Move.ReadValue<Vector2>() : Vector2.zero;
+    // A way to access where the player facing (idk if it should stay in this script)
+    public Vector2 Direction => _input != null ? _input.Player.Move.ReadValue<Vector2>() : Vector2.zero;
 
     private void Awake()
     {
@@ -25,7 +29,7 @@ public class PlayerInput : MonoBehaviour, IPlayerActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.performed || context.canceled)
+        if (context.performed || context.canceled) 
             Move?.Invoke(context.ReadValue<Vector2>());
     }
 
@@ -34,18 +38,23 @@ public class PlayerInput : MonoBehaviour, IPlayerActions
         Sprint?.Invoke(context.ReadValueAsButton());
     }
 
+    public void OnAttack1(InputAction.CallbackContext context)
+    {
+        Attack1?.Invoke(context.ReadValueAsButton());
+    }
+
+    public void OnAttack2(InputAction.CallbackContext context)
+    {
+        Attack2?.Invoke(context.ReadValueAsButton());
+    }
+
     
 
     // Unused actions (subject to change)
-    public void OnJump(InputAction.CallbackContext context) { }
     public void OnInteract(InputAction.CallbackContext context) { }
     public void OnLook(InputAction.CallbackContext context) { }
     public void OnNext(InputAction.CallbackContext context) { }
     public void OnPrevious(InputAction.CallbackContext context) { }
 
-    public void OnAttack1(InputAction.CallbackContext context)
-    {
-    }
-
-    public void OnAttack2(InputAction.CallbackContext context) { }
+    
 }

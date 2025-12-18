@@ -1,15 +1,7 @@
 using UnityEngine;
 
-public class PlayerCombat : MonoBehaviour
+public class PlayerAnimationHandler : MonoBehaviour
 {
-
-    
-
-
-
-
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

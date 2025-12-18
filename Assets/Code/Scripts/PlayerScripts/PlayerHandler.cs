@@ -2,18 +2,18 @@ using UnityEngine;
 
 
 /// <summary>
-/// This script will be used to handle communication between different Player components.
+/// This script is used to handle communication between different Player components.
 /// This script shouldn't be a singleton.
 /// </summary>
 
 public class PlayerHandler : MonoBehaviour
 {
-    private PlayerInput _input;
-    private PlayerMovement _movement; 
-    private PlayerCombat _combat;
-    private PlayerAnimation _animation;
-    private PlayerStamina _stamina;
-    // private PlayerFSM _fsm;
+    PlayerInput _input;
+    PlayerMovement _movement; 
+    PlayerCombat _combat;
+    PlayerAnimation _animation;
+    PlayerStamina _stamina;
+    // PlayerFSM _fsm;
     
     // Public read only references
     public PlayerInput Input => _input;
@@ -48,7 +48,7 @@ public class PlayerHandler : MonoBehaviour
 
     void OnEnable()
     {
-        // For now, movement directly subscribes to input events.
+        // For now, movement directly subscribes to input events
         // Will have to change this to handle states
         if (_input != null && _movement != null)
         {

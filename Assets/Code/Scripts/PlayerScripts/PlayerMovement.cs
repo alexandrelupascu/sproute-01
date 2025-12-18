@@ -39,8 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     private float GetMoveSpeed()
     {
-        if (_isSprinting && _stamina != null &&
-            _stamina.TryConsume(_sprintCost * Time.deltaTime))
+        if (_isSprinting && _stamina != null && _stamina.TryConsume(_sprintCost * Time.deltaTime))
         {
             return _sprintSpeed;
         }
