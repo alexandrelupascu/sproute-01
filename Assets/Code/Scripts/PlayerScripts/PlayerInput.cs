@@ -17,14 +17,14 @@ public class PlayerInput : MonoBehaviour, IPlayerActions
     // A way to access where the player facing (idk if it should stay in this script)
     public Vector2 Direction => _input != null ? _input.Player.Move.ReadValue<Vector2>() : Vector2.zero;
 
-    private void Awake()
+    void Awake()
     {
         _input = new InputSystem_Actions();
         _input.Player.SetCallbacks(this);
     }
 
-    private void OnEnable() => _input.Enable();
-    private void OnDisable() => _input.Disable();
+    void OnEnable() => _input.Enable();
+    void OnDisable() => _input.Disable();
 
 
     public void OnMove(InputAction.CallbackContext context)

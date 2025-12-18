@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     CharacterController _characterController;
     PlayerStamina _stamina;
 
-    private void Awake()
+    void Awake()
     {
         _stamina = GetComponent<PlayerStamina>();
         _characterController = GetComponent<CharacterController>();
@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
             Debug.LogWarning("PlayerMovement: PlayerStamina missing", this);
     }
 
-    private void Update()
+    void Update()
     {
         if (!_canMove) return;
 
@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
         _characterController.Move(movement * Time.deltaTime);
     }
 
-    private float GetMoveSpeed()
+    float GetMoveSpeed()
     {
         if (_isSprinting && _stamina != null && _stamina.TryConsume(_sprintCost * Time.deltaTime))
         {
@@ -47,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         return _walkSpeed;
     }
 
-    private Vector3 GetMoveVector(float speed)
+    Vector3 GetMoveVector(float speed)
     {
         Vector3 dir = new Vector3(_inputDirection.x, 0f, _inputDirection.y);
         dir = Vector3.ClampMagnitude(dir, 1f);
