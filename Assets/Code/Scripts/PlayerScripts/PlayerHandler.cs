@@ -21,9 +21,6 @@ public class PlayerHandler : MonoBehaviour
     public PlayerCombat Combat => _combat;
     public PlayerAnimation Animation => _animation;
     public PlayerStamina Stamina => _stamina;
-
-    // Todo : include PlayerStamina reference
-    
     // public PlayerFSM FSM => _fsm;
 
     void Awake()

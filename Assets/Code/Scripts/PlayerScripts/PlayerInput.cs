@@ -19,15 +19,9 @@ public class PlayerInput : MonoBehaviour, IPlayerActions
         _input.Player.SetCallbacks(this);
     }
 
-    private void OnEnable()
-    {
-        _input.Enable();
-    }
+    private void OnEnable() => _input.Enable();
+    private void OnDisable() => _input.Disable();
 
-    private void OnDisable()
-    {
-        _input.Disable();
-    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -44,10 +38,14 @@ public class PlayerInput : MonoBehaviour, IPlayerActions
 
     // Unused actions (subject to change)
     public void OnJump(InputAction.CallbackContext context) { }
-    public void OnAttack(InputAction.CallbackContext context) { }
-    public void OnCrouch(InputAction.CallbackContext context) { }
     public void OnInteract(InputAction.CallbackContext context) { }
     public void OnLook(InputAction.CallbackContext context) { }
     public void OnNext(InputAction.CallbackContext context) { }
     public void OnPrevious(InputAction.CallbackContext context) { }
+
+    public void OnAttack1(InputAction.CallbackContext context)
+    {
+    }
+
+    public void OnAttack2(InputAction.CallbackContext context) { }
 }

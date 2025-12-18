@@ -2,17 +2,18 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float _walkSpeed = 5f;
-    [SerializeField] private float _sprintSpeed = 10f;
+    [SerializeField] float _walkSpeed = 5f;
+    [SerializeField] float _sprintSpeed = 10f;
     [Tooltip("Stamina per second")]
-    [SerializeField] private float _sprintCost = 10f;
+    [SerializeField] float _sprintCost = 10f;
 
-    private Vector2 _inputDirection;
-    private bool _isSprinting;
-    private bool _canMove = true;
+    Vector2 _inputDirection;
+    bool _isSprinting;
+    bool _canMove = true;
 
-    private CharacterController _characterController;
-    private PlayerStamina _stamina;
+
+    CharacterController _characterController;
+    PlayerStamina _stamina;
 
     private void Awake()
     {
@@ -56,6 +57,7 @@ public class PlayerMovement : MonoBehaviour
 
     // FSM hooks
     public void SetCanMove(bool value) => _canMove = value;
+
 
     // Input hooks
     public void OnMove(Vector2 direction) => _inputDirection = direction;
