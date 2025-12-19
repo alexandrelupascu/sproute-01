@@ -61,6 +61,7 @@
 *.reason lfs-file
 *.lxo lfs-file
 *.exr lfs-file
+*.pur lfs-file
 
 # Documents
 *.pdf lfs-file
