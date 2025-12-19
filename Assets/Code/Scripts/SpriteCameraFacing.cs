@@ -64,19 +64,19 @@ public class SpriteCameraFacing : MonoBehaviour
     {
         if (_allowFullRotation) 
         {
-            Debug.LogWarning("Only one of the rotation options can be enabled at a time.");
+            Debug.LogWarning("SpriteCameraFacing: Only one of the rotation options can be enabled at a time.");
             _lockHorizontalRotation = false;
             _LockRotation = false;
         }
         if (_lockHorizontalRotation) 
         { 
-            Debug.LogWarning("Only one of the rotation options can be enabled at a time.");
+            Debug.LogWarning("SpriteCameraFacing: Only one of the rotation options can be enabled at a time.");
             _LockRotation = false;
             _allowFullRotation = false;
         }
         if (_LockRotation) 
         { 
-            Debug.LogWarning("Only one of the rotation options can be enabled at a time.");
+            Debug.LogWarning("SpriteCameraFacing: Only one of the rotation options can be enabled at a time.");
             _allowFullRotation = false;
             _lockHorizontalRotation = false;
         }
