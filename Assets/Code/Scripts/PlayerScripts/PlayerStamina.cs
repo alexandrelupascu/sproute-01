@@ -16,14 +16,15 @@ public class PlayerStamina : MonoBehaviour
     public float Stamina => _stamina;
     public bool HasStamina(float cost) => _stamina >= cost; // Can be used to check if enough stamina is available
 
-    private void Awake()
+    void Awake()
     {
         _stamina = _maxStamina;
     }
 
-    private void Update()
+    void Update()
     {
         Recover();
+        Debug.Log($"Stamina: {_stamina}/{_maxStamina}");
     }
 
     public bool TryConsume(float amount)
@@ -38,8 +39,7 @@ public class PlayerStamina : MonoBehaviour
 
     private void Recover()
     {
-        if (!_canRecover || _stamina >= _maxStamina)
-            return;
+        if (!_canRecover || _stamina >= _maxStamina) return;
 
         _timeSinceLastUse += Time.deltaTime;
 
@@ -49,10 +49,6 @@ public class PlayerStamina : MonoBehaviour
         }
     }
 
-
     // FSM hooks
-    public void SetCanRecover(bool value)
-    {
-        _canRecover = value;
-    }
+    public void SetCanRecover(bool value) => _canRecover = value;
 }

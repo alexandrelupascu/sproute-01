@@ -3,8 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class SpriteCameraFacing : MonoBehaviour
 {
-    [Header ("Experimental Settings")]
-    [SerializeField] bool _LockRotation = false;
+    [Header ("Experimental Settings (Will be applied to all instances of this script)")]
+    [SerializeField] bool _lockRotation = false;
     [SerializeField] bool _lockHorizontalRotation = false;
     [SerializeField] bool _allowFullRotation = false;
     Camera _mainCamera;
@@ -34,14 +34,14 @@ public class SpriteCameraFacing : MonoBehaviour
     private void LateUpdate()
     {
         // Make sure only one option is enabled at a time
-        HandleExperimentalSettingsChecks();
+        ExperimentalSettingsChecks();
 
         // Default behaviour
-        if (!_allowFullRotation && !_lockHorizontalRotation && !_LockRotation)
+        if (!_allowFullRotation && !_lockHorizontalRotation && !_lockRotation)
         {
             transform.rotation = _mainCamera.transform.rotation;
         }
-        else if (_LockRotation)
+        else if (_lockRotation)
         {
             transform.rotation = Quaternion.identity;
         }
@@ -59,22 +59,25 @@ public class SpriteCameraFacing : MonoBehaviour
             transform.Rotate(0, 180, 0); // To face the camera
         }
     }
-
-    void HandleExperimentalSettingsChecks()
+    
+    /// <summary>
+    /// Checks experimental settings to ensure only one rotation option is enabled.
+    /// </summary>
+    void ExperimentalSettingsChecks()
     {
-        if (_allowFullRotation) 
+        if (_allowFullRotation && (_lockHorizontalRotation || _lockRotation)) 
         {
             Debug.LogWarning("SpriteCameraFacing: Only one of the rotation options can be enabled at a time.");
             _lockHorizontalRotation = false;
-            _LockRotation = false;
+            _lockRotation = false;
         }
-        if (_lockHorizontalRotation) 
+        if (_lockHorizontalRotation && (_allowFullRotation || _lockRotation)) 
         { 
             Debug.LogWarning("SpriteCameraFacing: Only one of the rotation options can be enabled at a time.");
-            _LockRotation = false;
+            _lockRotation = false;
             _allowFullRotation = false;
         }
-        if (_LockRotation) 
+        if (_lockRotation && (_allowFullRotation || _lockHorizontalRotation)) 
         { 
             Debug.LogWarning("SpriteCameraFacing: Only one of the rotation options can be enabled at a time.");
             _allowFullRotation = false;

@@ -4,14 +4,11 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float _walkSpeed = 5f;
     [SerializeField] float _sprintSpeed = 10f;
-    [Tooltip("Stamina per second")]
     [SerializeField] float _sprintCost = 10f;
 
     Vector2 _inputDirection;
     bool _isSprinting;
     bool _canMove = true;
-
-
     CharacterController _characterController;
     PlayerStamina _stamina;
 

@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class PlayerHandler : MonoBehaviour
 {
+    // Required components
     PlayerInput _input;
     PlayerMovement _movement; 
     PlayerCombat _combat;
@@ -33,17 +34,17 @@ public class PlayerHandler : MonoBehaviour
         // _fsm = GetComponent<PlayerFSM>();
 
         if (_input == null)
-            Debug.LogWarning("PlayerHandler: _input (PlayerInput) is not assigned.", this);
+            Debug.LogWarning("PlayerHandler: PlayerInput missing", this);
         if (_movement == null)
-            Debug.LogWarning("PlayerHandler: _movement (PlayerMovement) is not assigned.", this);
+            Debug.LogWarning("PlayerHandler: PlayerMovement missing", this);
         if (_combat == null)
-            Debug.LogWarning("PlayerHandler: _combat (PlayerCombat) is not assigned.", this);
+            Debug.LogWarning("PlayerHandler: PlayerCombat missing", this);
         if (_animation == null)
-            Debug.LogWarning("PlayerHandler: _animation (PlayerAnimation) is not assigned.", this);
+            Debug.LogWarning("PlayerHandler: PlayerAnimation missing", this);
         if (_stamina == null)
-            Debug.LogWarning("PlayerHandler: _stamina (PlayerStamina) is not assigned.", this);
+            Debug.LogWarning("PlayerHandler: PlayerStamina missing", this);
         // if (_fsm == null)
-        //    Debug.LogWarning("PlayerHandler: _fsm (PlayerFSM) is not assigned.", this);
+        //    Debug.LogWarning("PlayerHandler: PlayerFSM missing", this);
     }
 
     void OnEnable()
