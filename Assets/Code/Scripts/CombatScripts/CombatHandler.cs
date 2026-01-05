@@ -1,27 +1,16 @@
-using System.Collections;
 using UnityEngine;
 
 public class CombatHandler : MonoBehaviour
 {
-    [SerializeField] private Weapon _weapon;
-
-    private bool _canAttack = true;
-
-    public void RequestAttack()
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
     {
-        if (!_canAttack)
-            return;
-
-        _weapon.Attack();
-        StartCoroutine(AttackCooldown());
+        
     }
 
-    // Cooldown coroutine
-    private IEnumerator AttackCooldown()
+    // Update is called once per frame
+    void Update()
     {
-        _canAttack = false;
-        yield return new WaitForSeconds(_weapon.Cooldown);
-        _canAttack = true;
+        
     }
 }
-

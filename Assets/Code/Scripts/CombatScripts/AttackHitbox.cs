@@ -2,25 +2,15 @@ using UnityEngine;
 
 public class AttackHitbox : MonoBehaviour
 {
-    private float _damage;
-
-    public void EnableForSeconds(float duration, float damage)
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
     {
-        _damage = damage;
-        gameObject.SetActive(true);
-        Invoke(nameof(Disable), duration);
+        
     }
 
-    private void OnTriggerEnter(Collider other)
+    // Update is called once per frame
+    void Update()
     {
-        if (other.TryGetComponent(out HealthHandler health))
-        {
-            health.TakeDamage(_damage);
-        }
-    }
-
-    private void Disable()
-    {
-        gameObject.SetActive(false);
+        
     }
 }
