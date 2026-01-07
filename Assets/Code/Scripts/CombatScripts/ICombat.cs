@@ -2,10 +2,14 @@
 
 
 // Components such as HealthHandler or DestructibleObject should implement these interfaces.
+using UnityEngine;
+
 public interface IDamageable
 {
+    HealthData HealthData { get; } // still unsure about this being a SO
     void TakeDamage(int amount);
 }
+
 
 public interface IHealable
 {
@@ -17,11 +21,11 @@ public interface IKillable
     void Die();
 }
 
-
+// meh unsure about these
 // Components that can initiate attacks should implement this interface (Projectile, Hitbox)
 public interface IAttackSource
 {
-    int Damage { get; }
+    WeaponEffectData[] Effects { get; }
 }
 
 // Components that can be attacked should implement this interface.

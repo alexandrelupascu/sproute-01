@@ -6,7 +6,7 @@ using UnityEngine;
 /// This script will handle the Player Finite State Machine (FSM).
 /// For now, Movement and Animation states will be handled in PlayerHandler.
 /// </summary>
-public class PlayerFSM : MonoBehaviour
+public class PlayerFSM : MonoBehaviour // maybe this should be a plain c# class
 {
 
     

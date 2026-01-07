@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // maybe player stats should be moved to a scriptable object
     [SerializeField] float _walkSpeed = 5f;
     [SerializeField] float _sprintSpeed = 10f;
     [SerializeField] float _sprintCost = 10f;

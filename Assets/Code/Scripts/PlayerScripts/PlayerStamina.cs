@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerStamina : MonoBehaviour
+public class PlayerStamina : MonoBehaviour // I think this should be a plain c# class
 {
     [SerializeField] float _maxStamina = 100f; // This should stay 100 as it's used in percentages
     [Tooltip("Stamina percentage recovered per second")]
