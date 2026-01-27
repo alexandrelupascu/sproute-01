@@ -18,7 +18,7 @@ public interface IHealable
 
 public interface IKillable
 {
-    void Die();
+    void Kill();
 }
 
 // meh unsure about these

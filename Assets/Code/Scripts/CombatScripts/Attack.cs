@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AttackHitbox : MonoBehaviour
+public class Attack : MonoBehaviour
 {
     Collider _hitboxCollider;
 
@@ -13,7 +13,6 @@ public class AttackHitbox : MonoBehaviour
             Debug.LogError("No Collider component found on AttackHitbox GameObject.");
         }
     }
-
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

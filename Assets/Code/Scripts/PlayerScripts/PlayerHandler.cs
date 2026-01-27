@@ -11,7 +11,8 @@ public class PlayerHandler : MonoBehaviour
     // Required components
     PlayerInput _input;
     PlayerMovement _movement; 
-    PlayerCombat _combat;
+    //PlayerCombat _combat;
+    CombatHandler _combat;
     PlayerAnimation _animation;
     PlayerStamina _stamina;
     // PlayerFSM _fsm;
@@ -19,7 +20,8 @@ public class PlayerHandler : MonoBehaviour
     // Public read only references
     public PlayerInput Input => _input;
     public PlayerMovement Movement => _movement;
-    public PlayerCombat Combat => _combat;
+    //public PlayerCombat Combat => _combat;
+    public CombatHandler Combat => _combat;
     public PlayerAnimation Animation => _animation;
     public PlayerStamina Stamina => _stamina;
     // public PlayerFSM FSM => _fsm;
@@ -28,7 +30,8 @@ public class PlayerHandler : MonoBehaviour
     {
         _input = GetComponent<PlayerInput>();
         _movement = GetComponent<PlayerMovement>();
-        _combat = GetComponent<PlayerCombat>();
+        //_combat = GetComponent<PlayerCombat>();
+        _combat = GetComponent<CombatHandler>();
         _animation = GetComponent<PlayerAnimation>();
         _stamina = GetComponent<PlayerStamina>();
         // _fsm = GetComponent<PlayerFSM>();
