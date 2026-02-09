@@ -1,8 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// Describes a weapon effect (e.g., damage, fire, knockback, poison, etc.). 
-/// Weapon effects can be combined to create complex attack behaviors.
+/// Describes an attack effect (e.g., damage, fire, knockback, poison, etc.). 
+/// Attack effects can be combined to create complex attack behaviors.
 /// </summary>
 [CreateAssetMenu(fileName = "WeaponEffectData", menuName = "Scriptable Objects/WeaponEffectData")]
 public class WeaponEffectData : ScriptableObject
@@ -11,7 +11,8 @@ public class WeaponEffectData : ScriptableObject
     public enum EffectType
     {
         Damage,
-        // More effect types can be added here.
+        Movement,
+        
     }
 
     [SerializeField] EffectType effectType;

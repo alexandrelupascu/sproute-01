@@ -8,8 +8,13 @@ using UnityEngine;
 /// </summary>
 public class PlayerFSM : MonoBehaviour // maybe this should be a plain c# class
 {
-
+    // this reference allows access to all the players relevant components
+    PlayerHandler _player;
     
+    public void Init(PlayerHandler playerHandler)
+    {
+        _player = playerHandler;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,3 +28,5 @@ public class PlayerFSM : MonoBehaviour // maybe this should be a plain c# class
         
     }
 }
+
+

@@ -8,25 +8,20 @@ public class Weapon : MonoBehaviour
 {
 
     [SerializeField] string weaponName;
-    [SerializeField] DeliveryType _deliveryType;
     [SerializeField] Attack _attackPrefab; // could maybe be a list if a weapon has multiple attack types
 
 
-    void Start()
+    public void Attack(Transform originPoint)
     {
+        if (_attackPrefab != null)
+        {
+            // Instantiate the attack prefab at the origin point's position and rotation
+            Instantiate(_attackPrefab, originPoint.position, originPoint.rotation);
         
-    }
-
-
-    void Update()
-    {
-        
-    }
-
-    public enum DeliveryType
-    {
-        Melee,
-        Ranged,
-        // More delivery types can be added here.
+        }
+        else
+        {
+            Debug.LogError("No attack prefab assigned to weapon: " + weaponName);
+        }
     }
 }

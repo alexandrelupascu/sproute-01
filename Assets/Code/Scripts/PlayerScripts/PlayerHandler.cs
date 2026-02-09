@@ -10,13 +10,13 @@ public class PlayerHandler : MonoBehaviour
 {
     // Required components
     PlayerInput _input;
-    PlayerMovement _movement; 
+    PlayerMovement _movement;
     //PlayerCombat _combat;
     CombatHandler _combat;
     PlayerAnimation _animation;
     PlayerStamina _stamina;
-    // PlayerFSM _fsm;
-    
+    PlayerFSM _fsm;
+
     // Public read only references
     public PlayerInput Input => _input;
     public PlayerMovement Movement => _movement;
@@ -24,7 +24,7 @@ public class PlayerHandler : MonoBehaviour
     public CombatHandler Combat => _combat;
     public PlayerAnimation Animation => _animation;
     public PlayerStamina Stamina => _stamina;
-    // public PlayerFSM FSM => _fsm;
+    public PlayerFSM FSM => _fsm;
 
     void Awake()
     {
@@ -34,8 +34,10 @@ public class PlayerHandler : MonoBehaviour
         _combat = GetComponent<CombatHandler>();
         _animation = GetComponent<PlayerAnimation>();
         _stamina = GetComponent<PlayerStamina>();
-        // _fsm = GetComponent<PlayerFSM>();
+        _fsm = GetComponent<PlayerFSM>();
 
+
+        // do proper initialization
         if (_input == null)
             Debug.LogWarning("PlayerHandler: PlayerInput missing", this);
         if (_movement == null)
@@ -46,8 +48,16 @@ public class PlayerHandler : MonoBehaviour
             Debug.LogWarning("PlayerHandler: PlayerAnimation missing", this);
         if (_stamina == null)
             Debug.LogWarning("PlayerHandler: PlayerStamina missing", this);
-        // if (_fsm == null)
-        //    Debug.LogWarning("PlayerHandler: PlayerFSM missing", this);
+
+        if (_fsm == null)
+        {
+            Debug.LogWarning("PlayerHandler: PlayerFSM missing", this);
+        }
+        else
+        {
+            
+        }
+
     }
 
     void OnEnable()
@@ -73,6 +83,6 @@ public class PlayerHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
