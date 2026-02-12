@@ -1,27 +1,24 @@
 using UnityEngine;
 
-public class Attack : MonoBehaviour
+public class Attack : MonoBehaviour, IAttackSource
 {
     Collider _hitboxCollider;
+    [SerializeField] AttackEffectData[]  _effects;
+    public AttackEffectData[] Effects => _effects;
 
     void Awake()
     {
         _hitboxCollider = GetComponent<Collider>();
 
-        if (_hitboxCollider == null)
-        {
-            Debug.LogError("No Collider component found on AttackHitbox GameObject.");
-        }
+        if (_hitboxCollider == null) Debug.LogError("No Collider component found on AttackHitbox GameObject.");
     }
 
-    void Start()
+    void OnTriggerEnter(Collider other)
     {
-    
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        IAttackTarget target = other.GetComponentInParent<IAttackTarget>();
+        target?.ReceiveAttack(this);
         
     }
+
+    
 }

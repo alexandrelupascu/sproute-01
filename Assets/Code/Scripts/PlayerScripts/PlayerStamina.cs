@@ -1,54 +1,64 @@
 using UnityEngine;
 
+// possibly generalize this for all game objects implementing stamina logic 
 public class PlayerStamina : MonoBehaviour // I think this should be a plain c# class
 {
     [SerializeField] float _maxStamina = 100f; // This should stay 100 as it's used in percentages
-    [Tooltip("Stamina percentage recovered per second")]
-    [SerializeField] float _recoveryRate = 10f;
-    [Tooltip("Time in seconds before stamina starts recovering")]
-    [SerializeField] float _recoveryCooldown = 2f;
 
-    float _stamina;
-    float _timeSinceLastUse;
+    [Tooltip("Stamina percentage recovered per second")] [SerializeField]
+    float _recoveryRate = 10f;
+
+    [Tooltip("Time in seconds before stamina starts recovering")] [SerializeField]
+    float _recoveryCooldown = 2f;
+
+    // should this be handled in FSM?
     bool _canRecover = true;
 
+    float _timeSinceLastUse;
+
     // Public read only references
-    public float Stamina => _stamina;
-    public bool HasStamina(float cost) => _stamina >= cost; // Can be used to check if enough stamina is available
+    public float Stamina { get; private set; }
 
     void Awake()
     {
-        _stamina = _maxStamina;
+        Stamina = _maxStamina;
     }
 
     void Update()
     {
         Recover();
-        Debug.Log($"Stamina: {_stamina}/{_maxStamina}");
+        //Debug.Log($"Stamina: {Stamina}/{_maxStamina}");
+    }
+
+    public bool HasStamina(float cost)
+    {
+        return Stamina >= cost;
+        // Can be used to check if enough stamina is available
     }
 
     public bool TryConsume(float amount)
     {
-        if (_stamina < amount)
+        if (Stamina < amount)
             return false;
 
-        _stamina -= amount;
+        Stamina -= amount;
         _timeSinceLastUse = 0f;
         return true;
     }
 
-    private void Recover()
+    void Recover()
     {
-        if (!_canRecover || _stamina >= _maxStamina) return;
+        if (!_canRecover || Stamina >= _maxStamina) return;
 
         _timeSinceLastUse += Time.deltaTime;
 
         if (_timeSinceLastUse >= _recoveryCooldown)
-        {
-            _stamina = Mathf.Clamp(_stamina + _recoveryRate * Time.deltaTime, 0f, _maxStamina);
-        }
+            Stamina = Mathf.Clamp(Stamina + _recoveryRate * Time.deltaTime, 0f, _maxStamina);
     }
 
     // FSM hooks
-    public void SetCanRecover(bool value) => _canRecover = value;
+    public void SetCanRecover(bool value)
+    {
+        _canRecover = value;
+    }
 }

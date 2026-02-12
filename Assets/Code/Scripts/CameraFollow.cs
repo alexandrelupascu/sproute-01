@@ -1,28 +1,35 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
-/// This script gets attached to the main camera and makes it follow a target game object from a set distance and angle.
+///     This script gets attached to the main camera and makes it follow a target game object from a set distance and
+///     angle.
 /// </summary>
 public class CameraFollow : MonoBehaviour
 {
     [Tooltip("The target GameObject for the camera to follow. If left empty, it will try to find the Player by tag.")]
     [SerializeField] GameObject _cameraTarget;
+
     [SerializeField] float _distanceFromTarget = 6.0f;
-    [SerializeField][Range(0, 90)] float _lookAngle = 30.0f;
-    [Tooltip("Lower means snappier camera movement")]
-    [SerializeField] float _positionSmoothTime = 0.3f;
-    Transform _targetTransform;
+    [SerializeField] [Range(0, 90)] float _lookAngle = 30.0f;
+
+    [Tooltip("Lower means snappier camera movement")] [SerializeField]
+    float _positionSmoothTime = 0.3f;
+
+    [Header("Experimental Settings")] [SerializeField]
+    bool _isYUnlocked;
+
+    [SerializeField] float _rotationSmoothTime = 0.3f;
+
+    [Tooltip("Camera bounds.")] [SerializeField]
+    float _zTopBound;
+
+    [SerializeField] float _zBottomBound = -8f;
     Vector3 _positionOffset;
     Vector3 _velocity = Vector3.zero;
 
-    [Header("Experimental Settings")]
-    [SerializeField] bool _isYUnlocked = false;
-    [SerializeField] float _rotationSmoothTime = 0.3f;
-
     // Public read only references
-    public Transform TargetTransform => _targetTransform;
+    public Transform TargetTransform { get; private set; }
 
     void Awake()
     {
@@ -32,17 +39,21 @@ public class CameraFollow : MonoBehaviour
             Debug.LogWarning("CameraFollow: _cameraTarget not assigned, found Player by tag instead.", this);
         }
 
-        _targetTransform = _cameraTarget.GetComponent<Transform>();
+        TargetTransform = _cameraTarget.GetComponent<Transform>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        CheckBounds();
+
         _positionOffset = CalculatePositionOffset();
-        Vector3 currentPosition = transform.position - _positionOffset;
+        var currentPosition = transform.position - _positionOffset;
 
         // Follows the target and smooths the camera movement
-        transform.position = Vector3.SmoothDamp(currentPosition, _targetTransform.position, ref _velocity, _positionSmoothTime) + _positionOffset;
+        transform.position =
+            Vector3.SmoothDamp(currentPosition, TargetTransform.position, ref _velocity, _positionSmoothTime) +
+            _positionOffset;
 
         if (_isYUnlocked)
         {
@@ -51,24 +62,31 @@ public class CameraFollow : MonoBehaviour
 
 
             // Smoothly rotates the camera to look at the target
-            Vector3 lookDirection = _targetTransform.position - transform.position;
+            var lookDirection = TargetTransform.position - transform.position;
             lookDirection.Normalize();
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), _rotationSmoothTime * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection),
+                _rotationSmoothTime * Time.deltaTime);
         }
         else
         {
             // Sets the camera at the right angle based on the lookAngle
-            Quaternion rotation = Quaternion.Euler(_lookAngle, 0, 0);
+            var rotation = Quaternion.Euler(_lookAngle, 0, 0);
             transform.SetLocalPositionAndRotation(transform.localPosition, rotation);
         }
-
     }
 
-    private Vector3 CalculatePositionOffset()
+    void CheckBounds()
+    {
+        var pos = transform.position;
+        pos.z = Mathf.Clamp(pos.z, _zBottomBound, _zTopBound);
+        transform.position = pos;
+    }
+
+    Vector3 CalculatePositionOffset()
     {
         // soh cah toa :3
-        Vector3 positionOffset = Vector3.zero;
+        var positionOffset = Vector3.zero;
         positionOffset.z = -(float)(Math.Cos(_lookAngle * (Math.PI / 180)) * _distanceFromTarget);
         positionOffset.y = (float)(Math.Sin(_lookAngle * (Math.PI / 180)) * _distanceFromTarget);
 
