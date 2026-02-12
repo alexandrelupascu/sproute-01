@@ -61,6 +61,12 @@ public class PlayerMovement : MonoBehaviour
     public void OnMove(Vector2 direction)
     {
         _inputDirection = direction;
+        
+        // rotate the GameObject (and children) based on movement direction
+        if (direction.x > 0)
+            transform.eulerAngles = new Vector3(0, 0, 0);
+        else if (direction.x < 0)
+            transform.eulerAngles = new Vector3(0, 180, 0);
     }
 
     public void OnSprint(bool value)
