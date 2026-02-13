@@ -1,4 +1,5 @@
 public interface IAttackTarget
 {
-    void ReceiveAttack(IAttackSource source);
+    //Transform GetTargetPosition(); // for potential auto locking system
+
 }

@@ -1,10 +1,13 @@
 using UnityEngine;
 
-public class Attack : MonoBehaviour, IAttackSource
+public class Attack : MonoBehaviour
 {
     Collider _hitboxCollider;
     [SerializeField] AttackEffectData[]  _effects;
-    public AttackEffectData[] Effects => _effects;
+    [SerializeField] float _lifeTime;
+    [SerializeField] float _velocity;
+    
+    //public AttackEffectData[] Effects => _effects;
 
     void Awake()
     {
@@ -16,8 +19,14 @@ public class Attack : MonoBehaviour, IAttackSource
     void OnTriggerEnter(Collider other)
     {
         IAttackTarget target = other.GetComponentInParent<IAttackTarget>();
-        target?.ReceiveAttack(this);
         
+        if (target != null)
+        {
+            foreach (AttackEffectData effect in _effects)
+            {
+                
+            }
+        }
     }
 
     
