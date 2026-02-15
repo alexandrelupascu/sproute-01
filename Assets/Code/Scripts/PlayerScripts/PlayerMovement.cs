@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // maybe player stats should be moved to a scriptable object
     [SerializeField] float _walkSpeed = 5f;
     [SerializeField] float _sprintSpeed = 10f;
     [SerializeField] float _sprintCost = 10f;
+    bool _canMove = true;
+    CharacterController _characterController;
 
     Vector2 _inputDirection;
     bool _isSprinting;
-    bool _canMove = true;
-    CharacterController _characterController;
     PlayerStamina _stamina;
 
     void Awake()
@@ -36,26 +37,40 @@ public class PlayerMovement : MonoBehaviour
 
     float GetMoveSpeed()
     {
-        if (_isSprinting && _stamina != null && _stamina.TryConsume(_sprintCost * Time.deltaTime))
-        {
-            return _sprintSpeed;
-        }
+        if (_isSprinting && _stamina.TryConsume(_sprintCost * Time.deltaTime)) return _sprintSpeed;
 
         return _walkSpeed;
     }
 
     Vector3 GetMoveVector(float speed)
     {
-        Vector3 dir = new Vector3(_inputDirection.x, 0f, _inputDirection.y);
+        Vector3 dir = new (_inputDirection.x, 0f, _inputDirection.y);
         dir = Vector3.ClampMagnitude(dir, 1f);
+        
         return dir * speed;
     }
 
     // FSM hooks
-    public void SetCanMove(bool value) => _canMove = value;
+    public void SetCanMove(bool value)
+    {
+        _canMove = value;
+    }
 
 
     // Input hooks
-    public void OnMove(Vector2 direction) => _inputDirection = direction;
-    public void OnSprint(bool value) => _isSprinting = value;
+    public void OnMove(Vector2 direction)
+    {
+        _inputDirection = direction;
+        
+        // rotate the GameObject (and children) based on movement direction
+        if (direction.x > 0)
+            transform.eulerAngles = new Vector3(0, 0, 0);
+        else if (direction.x < 0)
+            transform.eulerAngles = new Vector3(0, 180, 0);
+    }
+
+    public void OnSprint(bool value)
+    {
+        _isSprinting = value;
+    }
 }

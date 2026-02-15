@@ -1,75 +1,81 @@
 using UnityEngine;
 
-
 /// <summary>
-/// This script is used to handle communication between different Player components.
-/// This script shouldn't be a singleton.
+///     This script is used to handle communication between different Player components.
+///     This script shouldn't be a singleton.
 /// </summary>
-
 public class PlayerHandler : MonoBehaviour
 {
+    //PlayerCombat _combat;
+
     // Required components
-    PlayerInput _input;
-    PlayerMovement _movement; 
-    PlayerCombat _combat;
-    PlayerAnimation _animation;
-    PlayerStamina _stamina;
-    // PlayerFSM _fsm;
-    
+
     // Public read only references
-    public PlayerInput Input => _input;
-    public PlayerMovement Movement => _movement;
-    public PlayerCombat Combat => _combat;
-    public PlayerAnimation Animation => _animation;
-    public PlayerStamina Stamina => _stamina;
-    // public PlayerFSM FSM => _fsm;
+    public PlayerInput Input { get; private set; }
+
+    public PlayerMovement Movement { get; private set; }
+
+    //public PlayerCombat Combat => _combat;
+    public CombatHandler Combat { get; private set; }
+
+    public PlayerAnimation Animation { get; private set; }
+
+    public PlayerStamina Stamina { get; private set; }
+
+    public PlayerFSM FSM { get; private set; }
 
     void Awake()
     {
-        _input = GetComponent<PlayerInput>();
-        _movement = GetComponent<PlayerMovement>();
-        _combat = GetComponent<PlayerCombat>();
-        _animation = GetComponent<PlayerAnimation>();
-        _stamina = GetComponent<PlayerStamina>();
-        // _fsm = GetComponent<PlayerFSM>();
+        Input = GetComponent<PlayerInput>();
+        Movement = GetComponent<PlayerMovement>();
+        //_combat = GetComponent<PlayerCombat>();
+        Combat = GetComponent<CombatHandler>();
+        Animation = GetComponent<PlayerAnimation>();
+        Stamina = GetComponent<PlayerStamina>();
+        FSM = GetComponent<PlayerFSM>();
 
-        if (_input == null)
+
+        // do proper initialization
+        if (Input == null)
             Debug.LogWarning("PlayerHandler: PlayerInput missing", this);
-        if (_movement == null)
+        if (Movement == null)
             Debug.LogWarning("PlayerHandler: PlayerMovement missing", this);
-        if (_combat == null)
+        if (Combat == null)
             Debug.LogWarning("PlayerHandler: PlayerCombat missing", this);
-        if (_animation == null)
+        if (Animation == null)
             Debug.LogWarning("PlayerHandler: PlayerAnimation missing", this);
-        if (_stamina == null)
+        if (Stamina == null)
             Debug.LogWarning("PlayerHandler: PlayerStamina missing", this);
-        // if (_fsm == null)
-        //    Debug.LogWarning("PlayerHandler: PlayerFSM missing", this);
+
+        if (FSM == null) Debug.LogWarning("PlayerHandler: PlayerFSM missing", this);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
     }
 
     void OnEnable()
     {
         // For now, movement directly subscribes to input events
         // Will have to change this to handle states
-        if (_input != null && _movement != null)
+        if (Input != null && Movement != null && Combat != null)
         {
-            _input.Move += _movement.OnMove;
-            _input.Sprint += _movement.OnSprint;
+            Input.Move += Movement.OnMove;
+            Input.Sprint += Movement.OnSprint;
+
+            Input.Attack1 += Combat.OnAttack;
         }
     }
 
     void OnDisable()
     {
-        if (_input != null && _movement != null)
+        if (Input != null && Movement != null)
         {
-            _input.Move -= _movement.OnMove;
-            _input.Sprint -= _movement.OnSprint;
-        }
-    }
+            Input.Move -= Movement.OnMove;
+            Input.Sprint -= Movement.OnSprint;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            Input.Attack1 -= Combat.OnAttack;
+        }
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerCombat : MonoBehaviour
+public class EnemyCombat : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -10,5 +10,6 @@ public class PlayerCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
     }
 }

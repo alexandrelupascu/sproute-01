@@ -3,16 +3,17 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class SpriteCameraFacing : MonoBehaviour
 {
-    [Header ("Experimental Settings (Will be applied to all instances of this script)")]
-    [SerializeField] bool _lockRotation = false;
-    [SerializeField] bool _lockHorizontalRotation = false;
-    [SerializeField] bool _allowFullRotation = false;
+    [Header("Experimental Settings (Will be applied to all instances of this script)")] [SerializeField]
+    bool _lockRotation;
+
+    [SerializeField] bool _lockHorizontalRotation;
+    [SerializeField] bool _allowFullRotation;
     Camera _mainCamera;
 
-    private void Awake()
+    void Awake()
     {
         // Find the main camera by tag without having to assign in the inspector
-        GameObject camObj = GameObject.FindGameObjectWithTag("MainCamera");
+        var camObj = GameObject.FindGameObjectWithTag("MainCamera");
 
         if (camObj == null)
         {
@@ -31,7 +32,7 @@ public class SpriteCameraFacing : MonoBehaviour
     }
 
     // LateUpdate is called after camera has moved
-    private void LateUpdate()
+    void LateUpdate()
     {
         // Make sure only one option is enabled at a time
         ExperimentalSettingsChecks();
@@ -50,7 +51,8 @@ public class SpriteCameraFacing : MonoBehaviour
             // Vector3 camEuler = _mainCamera.transform.rotation.eulerAngles;
             // transform.rotation = Quaternion.Euler(0, camEuler.y, 0);
 
-            transform.LookAt(new Vector3(_mainCamera.transform.position.x, transform.position.y, _mainCamera.transform.position.z));
+            transform.LookAt(new Vector3(_mainCamera.transform.position.x, transform.position.y,
+                _mainCamera.transform.position.z));
             transform.Rotate(0, 180, 0); // To face the camera
         }
         else if (_allowFullRotation)
@@ -59,26 +61,28 @@ public class SpriteCameraFacing : MonoBehaviour
             transform.Rotate(0, 180, 0); // To face the camera
         }
     }
-    
+
     /// <summary>
-    /// Checks experimental settings to ensure only one rotation option is enabled.
+    ///     Checks experimental settings to ensure only one rotation option is enabled.
     /// </summary>
     void ExperimentalSettingsChecks()
     {
-        if (_allowFullRotation && (_lockHorizontalRotation || _lockRotation)) 
+        if (_allowFullRotation && (_lockHorizontalRotation || _lockRotation))
         {
             Debug.LogWarning("SpriteCameraFacing: Only one of the rotation options can be enabled at a time.");
             _lockHorizontalRotation = false;
             _lockRotation = false;
         }
-        if (_lockHorizontalRotation && (_allowFullRotation || _lockRotation)) 
-        { 
+
+        if (_lockHorizontalRotation && (_allowFullRotation || _lockRotation))
+        {
             Debug.LogWarning("SpriteCameraFacing: Only one of the rotation options can be enabled at a time.");
             _lockRotation = false;
             _allowFullRotation = false;
         }
-        if (_lockRotation && (_allowFullRotation || _lockHorizontalRotation)) 
-        { 
+
+        if (_lockRotation && (_allowFullRotation || _lockHorizontalRotation))
+        {
             Debug.LogWarning("SpriteCameraFacing: Only one of the rotation options can be enabled at a time.");
             _allowFullRotation = false;
             _lockHorizontalRotation = false;
