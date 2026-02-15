@@ -10,5 +10,6 @@ public class EnemyCombat : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
     }
 }

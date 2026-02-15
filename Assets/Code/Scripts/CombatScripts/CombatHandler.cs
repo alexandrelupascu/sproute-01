@@ -7,8 +7,6 @@ public class CombatHandler : MonoBehaviour
 
     bool _isAttacking;
 
-    
-
     void Awake()
     {
         // TODO : equip weapon based on saved player state
@@ -25,7 +23,10 @@ public class CombatHandler : MonoBehaviour
 
     void Update()
     {
-        if (_isAttacking) _equippedWeapon.Attack();
+        if (_isAttacking)
+        {
+            _equippedWeapon.Attack();
+        }
     }
 
     public void ChangeWeapon(Weapon weapon)

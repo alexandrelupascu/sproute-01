@@ -1,33 +1,71 @@
 using UnityEngine;
 
+[System.Serializable]
+public struct AttackConfig
+{
+    public AttackEffectData[] effects;
+    public float lifeTime;
+    public float velocity;
+    public Vector3 hitboxSize;
+}
+
 public class Attack : MonoBehaviour
 {
-    Collider _hitboxCollider;
-    [SerializeField] AttackEffectData[]  _effects;
-    [SerializeField] float _lifeTime;
-    [SerializeField] float _velocity;
-    
-    //public AttackEffectData[] Effects => _effects;
+    BoxCollider _hitboxCollider;
+    AttackEffectData[] _effects;
+    float _lifeTime;
+    float _velocity;
+    bool _hasHit = false;
+    bool _initialized = false;
 
-    void Awake()
+    public void Initialize(AttackConfig config)
     {
-        _hitboxCollider = GetComponent<Collider>();
+        _effects = config.effects;
+        _lifeTime = config.lifeTime;
+        _velocity = config.velocity;
 
-        if (_hitboxCollider == null) Debug.LogError("No Collider component found on AttackHitbox GameObject.");
+        _hitboxCollider = GetComponent<BoxCollider>();
+        if (_hitboxCollider == null)
+        {
+            _hitboxCollider = gameObject.AddComponent<BoxCollider>();
+        }
+
+        _hitboxCollider.isTrigger = true;
+        _hitboxCollider.center = Vector3.zero;
+        _hitboxCollider.size = config.hitboxSize;
+
+        Destroy(gameObject, _lifeTime);
+
+        _initialized = true;
+    }
+
+    void Start()
+    {
+        if (!_initialized)
+        {
+            Debug.LogError("Attack was never initialized!");
+        }
+    }
+
+    void Update()
+    {
+        transform.position += transform.forward * (_velocity * Time.deltaTime);
     }
 
     void OnTriggerEnter(Collider other)
     {
         IAttackTarget target = other.GetComponentInParent<IAttackTarget>();
-        
+
         if (target != null)
         {
+            Debug.Log("attack found collider");
+
+            GameObject targetObject = (target as Component).gameObject;
+
             foreach (AttackEffectData effect in _effects)
             {
-                
+                effect.GetStrategy().Execute(targetObject);
             }
         }
     }
-
-    
 }

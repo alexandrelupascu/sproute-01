@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4887920611388708850}
   - component: {fileID: 108012033226858683}
   - component: {fileID: 6865436307118472239}
-  - component: {fileID: 2719169286564819899}
   - component: {fileID: 6456016786865296087}
   - component: {fileID: 3141917613784231759}
   - component: {fileID: 5272708275690002917}
@@ -91,18 +90,6 @@ MonoBehaviour:
   _walkSpeed: 3
   _sprintSpeed: 5
   _sprintCost: 10
---- !u!114 &2719169286564819899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2696037134368968288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c13f208328934df19efadeac391594a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerCombatHandler
 --- !u!114 &6456016786865296087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,3 +323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c64e6130002449e180c9108d141b59d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteCameraFacing
+  _lockRotation: 0
+  _lockHorizontalRotation: 0
+  _allowFullRotation: 0
