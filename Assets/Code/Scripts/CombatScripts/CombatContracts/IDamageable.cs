@@ -1,4 +1,4 @@
-public interface IDamageable
+public interface IDamageable : IAttackTarget
 {
     // HealthData HealthData { get; } // still unsure about this being a SO
     

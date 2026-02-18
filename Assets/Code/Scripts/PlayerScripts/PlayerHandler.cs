@@ -6,18 +6,10 @@ using UnityEngine;
 /// </summary>
 public class PlayerHandler : MonoBehaviour
 {
-    //PlayerCombat _combat;
-
-    // Required components
-
     // Public read only references
     public PlayerInput Input { get; private set; }
-
     public PlayerMovement Movement { get; private set; }
-
-    //public PlayerCombat Combat => _combat;
     public CombatHandler Combat { get; private set; }
-
     public PlayerAnimation Animation { get; private set; }
 
     public PlayerStamina Stamina { get; private set; }
@@ -28,7 +20,6 @@ public class PlayerHandler : MonoBehaviour
     {
         Input = GetComponent<PlayerInput>();
         Movement = GetComponent<PlayerMovement>();
-        //_combat = GetComponent<PlayerCombat>();
         Combat = GetComponent<CombatHandler>();
         Animation = GetComponent<PlayerAnimation>();
         Stamina = GetComponent<PlayerStamina>();

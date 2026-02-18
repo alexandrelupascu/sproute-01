@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Health : MonoBehaviour, IAttackTarget, IDamageable, IKillable, IHealable
+public class Health : MonoBehaviour, IDamageable, IKillable, IHealable
 {
     [SerializeField] float _health;
     
