@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [System.Serializable]
@@ -11,7 +12,10 @@ public struct AttackConfig
 
 public class Attack : MonoBehaviour
 {
+    [SerializeField] Material _debugMaterial;
+    
     BoxCollider _hitboxCollider;
+    MeshRenderer _meshRenderer;
     AttackEffectData[] _effects;
     float _lifeTime;
     float _velocity;
@@ -20,6 +24,8 @@ public class Attack : MonoBehaviour
 
     public void Initialize(AttackConfig config, string attackLayer)
     {
+        _initialized = true;
+        
         _effects = config.effects;
         _lifeTime = config.lifeTime;
         _velocity = config.velocity;
@@ -34,12 +40,16 @@ public class Attack : MonoBehaviour
         _hitboxCollider.center = Vector3.zero;
         _hitboxCollider.size = config.hitboxSize;
 
+        if (DebugManager.Instance.AttackHitboxes)
+        {
+            DebugBox debugBox = gameObject.AddComponent<DebugBox>();
+            debugBox.Initialize(_hitboxCollider, _debugMaterial);
+        }
+        
         // Set the attack's layer
         gameObject.layer = LayerMask.NameToLayer(attackLayer);
 
         Destroy(gameObject, _lifeTime);
-
-        _initialized = true;
     }
 
     void Start()
@@ -70,4 +80,24 @@ public class Attack : MonoBehaviour
             }
         }
     }
+
+    void OnEnable()
+    {
+        DebugManager.Instance.AttackHitboxesChanged += ToggleDebug;
+        ToggleDebug(DebugManager.Instance.PlayerInfo); // sync immediately
+    }
+
+    void OnDisable()
+    {
+        DebugManager.Instance.AttackHitboxesChanged -= ToggleDebug;
+    }
+
+
+    void ToggleDebug(bool value)
+    {
+        
+            
+    }
+    
+    
 }
