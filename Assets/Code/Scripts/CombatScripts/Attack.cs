@@ -57,31 +57,17 @@ public class Attack : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Attack hit: {other.gameObject.name} on layer: {LayerMask.LayerToName(other.gameObject.layer)}");
-        
-        if (_hasHit)
-        {
-            Debug.Log("Attack already hit something, ignoring");
-            return;
-        }
+        if (_hasHit) return; // change this to use penetration
 
         IAttackTarget target = other.GetComponentInParent<IAttackTarget>();
-    
         if (target != null)
         {
-            Debug.Log($"Found IAttackTarget on: {( (Component) target).gameObject.name}");
-            
             _hasHit = true;
             
             foreach (AttackEffectData effect in _effects)
             {
-                Debug.Log($"Executing effect: {effect.name}");
                 effect.GetStrategy().Execute(other.gameObject);
             }
-        }
-        else
-        {
-            Debug.Log($"No IAttackTarget found on: {other.gameObject.name}");
         }
     }
 }
