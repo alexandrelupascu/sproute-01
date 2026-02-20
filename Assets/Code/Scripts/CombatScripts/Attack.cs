@@ -69,7 +69,7 @@ public class Attack : MonoBehaviour
     
         if (target != null)
         {
-            Debug.Log($"Found IAttackTarget on: {(target as Component).gameObject.name}");
+            Debug.Log($"Found IAttackTarget on: {( (Component) target).gameObject.name}");
             
             _hasHit = true;
             

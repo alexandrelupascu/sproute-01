@@ -130,6 +130,8 @@ GameObject:
   - component: {fileID: 31826254}
   - component: {fileID: 31826253}
   - component: {fileID: 31826252}
+  - component: {fileID: 31826256}
+  - component: {fileID: 31826255}
   m_Layer: 0
   m_Name: Alien (3)
   m_TagString: Untagged
@@ -225,6 +227,44 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &31826255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31826251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20844bdb8e54c45bcb728bc19c75f324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  _health: 30
+--- !u!143 &31826256
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31826251}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2.4799998
+  m_Radius: 0.56499994
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &271613452
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,17 +400,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 344616645649120374, guid: 4b3fc986aca364d0e85cf67218beae63, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1681187650048243900, guid: 4b3fc986aca364d0e85cf67218beae63, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.79671
+      value: -0.41
       objectReference: {fileID: 0}
     - target: {fileID: 1681187650048243900, guid: 4b3fc986aca364d0e85cf67218beae63, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.79671
+      value: 0.41
       objectReference: {fileID: 0}
     - target: {fileID: 1681187650048243900, guid: 4b3fc986aca364d0e85cf67218beae63, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.79671
+      value: 0.41
+      objectReference: {fileID: 0}
+    - target: {fileID: 1681187650048243900, guid: 4b3fc986aca364d0e85cf67218beae63, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2696037134368968288, guid: 4b3fc986aca364d0e85cf67218beae63, type: 3}
       propertyPath: m_Name
@@ -383,7 +431,7 @@ PrefabInstance:
     - target: {fileID: 3361658726547918629, guid: 4b3fc986aca364d0e85cf67218beae63, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 2182338722309626700, guid: 6a8d78493115d43d388d3987a68af4a7, type: 3}
+      objectReference: {fileID: 21300000, guid: b44f4e089097a4ae1af65a68bb9fc4c3, type: 3}
     - target: {fileID: 3361658726547918629, guid: 4b3fc986aca364d0e85cf67218beae63, type: 3}
       propertyPath: m_RenderingLayerMask
       value: 4294967295
@@ -439,7 +487,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6452472600532818253, guid: 4b3fc986aca364d0e85cf67218beae63, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1379156385}
   m_SourcePrefab: {fileID: 100100000, guid: 4b3fc986aca364d0e85cf67218beae63, type: 3}
 --- !u!1 &711682008 stripped
 GameObject:
@@ -598,11 +649,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraFollow
   _cameraTarget: {fileID: 711682008}
   _distanceFromTarget: 6
-  _lookAngle: 30
+  _lookAngle: 20
   _positionSmoothTime: 0.3
   _isYUnlocked: 0
   _rotationSmoothTime: 0.3
-  _zTopBound: 0
+  _zTopBound: -4
   _zBottomBound: -8
 --- !u!1 &994717680
 GameObject:
@@ -716,6 +767,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1379156383 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6452472600532818253, guid: 4b3fc986aca364d0e85cf67218beae63, type: 3}
+  m_PrefabInstance: {fileID: 683659451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1379156385
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379156383}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ecc862cba051d437db8e4ca296dc5c28, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1421378857
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -802,6 +880,7 @@ GameObject:
   - component: {fileID: 1577092099}
   - component: {fileID: 1577092102}
   - component: {fileID: 1577092103}
+  - component: {fileID: 1577092104}
   m_Layer: 11
   m_Name: Alien (1)
   m_TagString: Untagged
@@ -930,6 +1009,31 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1.1299999, y: 2.4799998, z: 0.19999999}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!143 &1577092104
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577092098}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2.4799998
+  m_Radius: 0.56499994
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1764929308
 PrefabInstance:
@@ -1126,6 +1230,8 @@ GameObject:
   - component: {fileID: 1910205907}
   - component: {fileID: 1910205906}
   - component: {fileID: 1910205905}
+  - component: {fileID: 1910205909}
+  - component: {fileID: 1910205908}
   m_Layer: 0
   m_Name: Alien (2)
   m_TagString: Untagged
@@ -1221,6 +1327,44 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!143 &1910205908
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910205904}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2.4799998
+  m_Radius: 0.56499994
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1910205909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910205904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20844bdb8e54c45bcb728bc19c75f324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  _health: 20
 --- !u!1 &2000396650
 GameObject:
   m_ObjectHideFlags: 0
