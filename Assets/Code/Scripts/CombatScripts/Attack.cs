@@ -10,41 +10,48 @@ public struct AttackConfig
     public Vector3 hitboxSize;
 }
 
+[RequireComponent(typeof(BoxCollider))]
+[RequireComponent(typeof(MeshRenderer))]
 public class Attack : MonoBehaviour
 {
-    [SerializeField] Material _debugMaterial;
-    
-    
-    BoxCollider _hitboxCollider;
-    MeshRenderer _meshRenderer;
-    AttackEffectData[] _effects;
-    float _lifeTime;
-    float _velocity;
-    bool _hasHit = false;
-    bool _initialized = false;
+    [SerializeField] private Material _debugMaterial;
 
+    private BoxCollider _hitboxCollider;
+    private MeshRenderer _meshRenderer;
+
+    private AttackEffectData[] _effects;
+    private float _lifeTime;
+    private float _velocity;
+
+    private bool _hasHit = false;
+    private bool _initialized = false;
+
+    // component setup
+    void Awake()
+    {
+        _hitboxCollider = GetComponent<BoxCollider>();
+        _meshRenderer = GetComponent<MeshRenderer>();
+
+        // Optional: assign debug material automatically
+        if (_debugMaterial != null)
+            _meshRenderer.material = _debugMaterial;
+    }
+
+    
     public void Initialize(AttackConfig config, string attackLayer)
     {
         _initialized = true;
-        
+
         _effects = config.effects;
         _lifeTime = config.lifeTime;
         _velocity = config.velocity;
 
-        _hitboxCollider = GetComponent<BoxCollider>();
-        // if (_hitboxCollider == null)
-        // {
-        //     _hitboxCollider = gameObject.AddComponent<BoxCollider>();
-        // }
-        
-        _meshRenderer = GetComponent<MeshRenderer>();
-
         _hitboxCollider.isTrigger = true;
         _hitboxCollider.center = Vector3.zero;
         _hitboxCollider.size = config.hitboxSize;
-        
-        // Set the attack's layer
+
         gameObject.layer = LayerMask.NameToLayer(attackLayer);
+
         Destroy(gameObject, _lifeTime);
     }
 
@@ -58,18 +65,19 @@ public class Attack : MonoBehaviour
 
     void Update()
     {
+        // this is a temp fix, it should be transform.forward
         transform.position += transform.right * (_velocity * Time.deltaTime);
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (_hasHit) return; // change this to use penetration
+        if (_hasHit) return;
 
         IAttackTarget target = other.GetComponentInParent<IAttackTarget>();
         if (target != null)
         {
             _hasHit = true;
-            
+
             foreach (AttackEffectData effect in _effects)
             {
                 effect.GetStrategy().Execute(other.gameObject);
@@ -77,26 +85,26 @@ public class Attack : MonoBehaviour
         }
     }
 
+    // debug system
     void OnEnable()
     {
-        DebugManager.Instance.AttackHitboxesChanged += ToggleDebug;
-        ToggleDebug(DebugManager.Instance.AttackHitboxes);
+        if (DebugManager.HasInstance)
+        {
+            DebugManager.Instance.AttackHitboxesChanged += ToggleDebug;
+            ToggleDebug(DebugManager.Instance.AttackHitboxes);
+        }
     }
 
     void OnDisable()
     {
-        DebugManager.Instance.AttackHitboxesChanged -= ToggleDebug;
+        if (DebugManager.HasInstance)
+        {
+            DebugManager.Instance.AttackHitboxesChanged -= ToggleDebug;
+        }
     }
-
 
     void ToggleDebug(bool value)
     {
-        if (_meshRenderer != null)
-        {
-            _meshRenderer.enabled = value;
-            
-        }
+        _meshRenderer.enabled = value;
     }
-    
-    
 }
