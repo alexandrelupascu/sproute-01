@@ -14,6 +14,7 @@ public class Attack : MonoBehaviour
 {
     [SerializeField] Material _debugMaterial;
     
+    
     BoxCollider _hitboxCollider;
     MeshRenderer _meshRenderer;
     AttackEffectData[] _effects;
@@ -31,24 +32,19 @@ public class Attack : MonoBehaviour
         _velocity = config.velocity;
 
         _hitboxCollider = GetComponent<BoxCollider>();
-        if (_hitboxCollider == null)
-        {
-            _hitboxCollider = gameObject.AddComponent<BoxCollider>();
-        }
+        // if (_hitboxCollider == null)
+        // {
+        //     _hitboxCollider = gameObject.AddComponent<BoxCollider>();
+        // }
+        
+        _meshRenderer = GetComponent<MeshRenderer>();
 
         _hitboxCollider.isTrigger = true;
         _hitboxCollider.center = Vector3.zero;
         _hitboxCollider.size = config.hitboxSize;
-
-        if (DebugManager.Instance.AttackHitboxes)
-        {
-            DebugBox debugBox = gameObject.AddComponent<DebugBox>();
-            debugBox.Initialize(_hitboxCollider, _debugMaterial);
-        }
         
         // Set the attack's layer
         gameObject.layer = LayerMask.NameToLayer(attackLayer);
-
         Destroy(gameObject, _lifeTime);
     }
 
@@ -62,7 +58,7 @@ public class Attack : MonoBehaviour
 
     void Update()
     {
-        transform.position += transform.forward * (_velocity * Time.deltaTime);
+        transform.position += transform.right * (_velocity * Time.deltaTime);
     }
 
     void OnTriggerEnter(Collider other)
@@ -84,7 +80,7 @@ public class Attack : MonoBehaviour
     void OnEnable()
     {
         DebugManager.Instance.AttackHitboxesChanged += ToggleDebug;
-        ToggleDebug(DebugManager.Instance.PlayerInfo); // sync immediately
+        ToggleDebug(DebugManager.Instance.AttackHitboxes);
     }
 
     void OnDisable()
@@ -95,8 +91,11 @@ public class Attack : MonoBehaviour
 
     void ToggleDebug(bool value)
     {
-        
+        if (_meshRenderer != null)
+        {
+            _meshRenderer.enabled = value;
             
+        }
     }
     
     

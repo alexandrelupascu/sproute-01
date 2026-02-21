@@ -488,6 +488,10 @@ PrefabInstance:
       propertyPath: _attackConfig.lifeTime
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 7701199392083762109, guid: 4b3fc986aca364d0e85cf67218beae63, type: 3}
+      propertyPath: _attackConfig.velocity
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
