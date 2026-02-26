@@ -23,7 +23,9 @@ public class PlayerHandler : MonoBehaviour
         Combat = GetComponent<CombatHandler>();
         Animation = GetComponent<PlayerAnimation>();
         Stamina = GetComponent<PlayerStamina>();
-        FSM = GetComponent<PlayerFSM>();
+
+        FSM = new PlayerFSM(this);
+        FSM.Init();
 
 
         // do proper initialization

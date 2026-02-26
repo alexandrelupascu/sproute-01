@@ -4,23 +4,34 @@ using UnityEngine;
 ///     This script will handle the Player Finite State Machine (FSM).
 ///     For now, Movement and Animation states will be handled in PlayerHandler.
 /// </summary>
-public class PlayerFSM : MonoBehaviour // maybe this should be a plain c# class
+
+public class PlayerFSM : MonoBehaviour
 {
-    // this reference allows access to all the players relevant components
-    PlayerHandler _player;
+    State _current;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    // States as public fields so they're easy to reference
+    public IdleState Idle;
+    public MoveState Move;
+    public SprintState Sprint;
+    public AttackState Attack;
+
+    public PlayerFSM(PlayerHandler player)
     {
+        Idle = new IdleState(player);
+        Move = new MoveState(player);
+        Sprint = new SprintState(player);
+        Attack = new AttackState(player);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
+    public void Init() => ChangeState(Idle);
 
-    public void Init(PlayerHandler playerHandler)
+    public void Tick() => _current?.Tick();
+    public void FixedTick() => _current?.FixedTick();
+
+    public void ChangeState(State next)
     {
-        _player = playerHandler;
+        _current?.Exit();
+        _current = next;
+        _current.Enter();
     }
 }
